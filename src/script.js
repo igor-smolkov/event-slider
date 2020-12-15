@@ -1,2 +1,3 @@
 import '@/style.scss'
-// import eventInfo from '@comp/event-info/event-info'
+import eventSlider from '@comp/event-slider/event-slider'
+eventSlider()
