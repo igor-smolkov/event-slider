@@ -21,4 +21,19 @@ body {
     line-height: 14px;
 
     padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.desktop {
+    align-self: center;
+    width: 800px;
+    height: 600px;
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    &__target-zone {
+        align-self: center;
+        border: 1px dashed black;
+    }
 }
