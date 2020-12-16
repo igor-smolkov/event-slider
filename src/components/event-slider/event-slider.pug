@@ -1,4 +1,5 @@
 mixin event-slider
   +b.event-slider
-    +e.INPUT.range(type="range")
+    +e.DATALIST.events#event-marks
+    +e.INPUT.range(type="range" list="event-marks")
     +e.P.value
