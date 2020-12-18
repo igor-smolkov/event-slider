@@ -1,34 +1,92 @@
 .event-slider {
     width: 100%;
-    padding: 20px;
+    padding: 40px 20px;
     color: red;
     &__range {
+        margin: 20px 0;
         width: 100%;
 
-        @mixin track {
-            width: 100%;
-            height: 10px;
-            background: #3071a9;
-            cursor: pointer;
+        @mixin track($props: 0) {
+            @if $props == focus {
+                background: black;
+            } @else if $props == hover {
+                margin-top: -1px;
+                padding-top: 3px;
+                height: 7px;
+            } @else {
+                width: 100%;
+                height: 3px;
+                background: darkgray;
+                cursor: pointer;
+            }
         }
-        @mixin thumb {
-            height: 30px;
-            width: 30px;
-            border-radius: 15px;
-            background: red;
-            cursor: pointer;
-            -webkit-appearance: none;
-            margin-top: -10px;
+        @mixin thumb($props: 0) {
+            @if $props == focus {
+                border-color: black;
+                cursor: col-resize;
+            } @else if $props == hover {
+                height: 32px;
+                width: 32px;
+                margin-top: -16px;
+            } @else {
+                height: 20px;
+                width: 20px;
+                margin-top: -9px;
+                border: 2px solid darkgray;
+                border-radius: 20px;
+                background: white;
+                cursor: pointer;
+                -webkit-appearance: none;
+            }
         }
 
         -webkit-appearance: none;
+
         &::-webkit-slider-runnable-track { @include track; }
         &::-moz-range-track { @include track; }
         &::-webkit-slider-thumb { @include thumb; }
         &::-moz-range-thumb { @include thumb; }
+
+        &:focus::-webkit-slider-runnable-track { @include track(focus); }
+        &:focus::-moz-range-track { @include track(focus); }
+        &:focus::-webkit-slider-thumb { @include thumb(focus); }
+        &:focus::-moz-range-thumb { @include thumb(focus); }
+
+        &::-webkit-slider-thumb:hover { @include thumb(hover); }
+        &::-moz-range-thumb:hover { @include thumb(hover); }
+        &::-webkit-slider-runnable-track:hover { @include track(hover); }
+        &::-moz-range-track:hover { @include track(hover); }
+        
+        // border: 1px solid blue;
     }
-    datalist {
+    &__events {
         display: flex;
         justify-content: space-between;
+        padding: 0 14px;
+        padding-right: 16px;
+        // border: 1px solid blue;
+        option {
+            display: block;
+            font-size: 0;
+            position: relative;
+            &::before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 2px;
+                height: 30px;
+                background-color: black;
+            }
+        }
+    }
+    position: relative;
+    &__value {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 5px;
+        border: 1px solid darkcyan;
     }
 }

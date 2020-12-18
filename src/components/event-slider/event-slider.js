@@ -35,14 +35,16 @@ export default function() {
     const eventSliderElement = document.querySelector('.event-slider')
     const rangeElement = eventSliderElement.querySelector('.event-slider__range')
     const eventsElement = eventSliderElement.querySelector('.event-slider__events')
+    const valueElement = eventSliderElement.querySelector('.event-slider__value')
 
     rangeElement.min = 0;
-    rangeElement.max = props.length;
+    rangeElement.max = props.length-1;
     rangeElement.step = 0.01;
-    rangeElement.value = props.length;
-    rangeElement.addEventListener('change', ()=>{
-        const currentValue = Math.round(rangeElement.value)
-        rangeElement.value = currentValue
+    rangeElement.value = props.length-1;
+    rangeElement.addEventListener('change', (e)=>{
+        const currentValue = Math.round(rangeElement.value);
+        rangeElement.value = currentValue;
+        showValue(currentValue);
     })
 
     props.forEach((event, index) => {
@@ -51,4 +53,9 @@ export default function() {
         eventElement.setAttribute('label', event.name);
         eventsElement.append(eventElement);
     })
+
+    showValue(props.length-1);
+    function showValue(value){
+        valueElement.innerText = props[value].name;
+    }
 }
