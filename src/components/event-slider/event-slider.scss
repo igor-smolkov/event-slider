@@ -4,6 +4,7 @@
     color: red;
     &__range {
         margin: 20px 0;
+        padding: 0 40px;
         width: 100%;
 
         @mixin track($props: 0) {
@@ -25,9 +26,10 @@
                 border-color: black;
                 cursor: col-resize;
             } @else if $props == hover {
-                height: 32px;
-                width: 32px;
-                margin-top: -16px;
+                // height: 32px;
+                // width: 32px;
+                // margin-top: -16px;
+                transform: scale(1.5);
             } @else {
                 height: 20px;
                 width: 20px;
@@ -59,7 +61,7 @@
         
         // border: 1px solid blue;
     }
-    &__events {
+    .events {
         display: flex;
         justify-content: space-between;
         padding: 0 14px;
@@ -67,26 +69,35 @@
         // border: 1px solid blue;
         option {
             display: block;
-            font-size: 0;
+            // padding: 10px;
+            // font-size: 0;
+            padding-top: 40px;
             position: relative;
             &::before {
                 content: '';
                 display: block;
                 position: absolute;
-                top: 0;
-                left: 0;
+                bottom: -15px;
+                left: 50%;
                 width: 2px;
-                height: 30px;
+                height: 10px;
                 background-color: black;
             }
         }
-    }
-    position: relative;
-    &__value {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 5px;
-        border: 1px solid darkcyan;
+        
+        position: relative;
+        &__current {
+            position: absolute;
+            min-width: 80px;
+            // max-width: 120px;
+            // width: 100%;
+            text-align: center;
+            top: 0;
+            left: 0;
+            padding: 5px;
+            border: 1px solid darkcyan;
+            background-color: white;
+            z-index: 1;
+        }
     }
 }
