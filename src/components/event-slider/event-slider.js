@@ -1,88 +1,69 @@
 import './event-slider.scss'
 
-const props = [
-    {
-        name: 'горячий прием',
-        date: '01.01.2018'
-    },
-    {
-        name: 'зло I',
-        date: '01.02.2018'
-    },
-    {
-        name: 'зло II',
-        date: '01.03.2018'
-    },
-    {
-        name: 'праздник',
-        date: '01.01.2019'
-    },
-    {
-        name: 'уголь',
-        date: '01.02.2019'
-    },
-    {
-        name: 'неявные отношения',
-        date: '01.01.2020'
-    },
-    {
-        name: 'уголь 20:20',
-        date: '01.02.2020'
+export default class EventSlider {
+    constructor(props) {
+        this.props = props; //убрать
+
+        this.elementSlider = document.querySelector('.event-slider');
+        this.elementRange = this.elementSlider.querySelector('.event-slider__range');
+        this.elementEvents = this.elementSlider.querySelector('.events');
+
+        this.currentValue = props.length-1;
+        this.isSlideStart = false;
+
+        this.initRange(props.length);
+
+        this.elementSlider.addEventListener('mousedown', this.mouseDown.bind(this));
+        this.elementSlider.addEventListener('mouseup', this.mouseUp.bind(this));
+        this.elementSlider.addEventListener('mousemove', this.mouseMove.bind(this));
+
+        props.forEach((event, index) => {
+            const eventElement = document.createElement('option');
+            eventElement.value = index;
+            eventElement.setAttribute('label', event.date);
+            this.elementEvents.append(eventElement);
+            eventElement.style.left = (this.elementSlider.offsetWidth/props.length)*index+
+                ((this.elementSlider.offsetWidth/props.length)-eventElement.offsetWidth)/2 + 'px';
+        })
+
+        this.showValue(this.currentValue);
     }
-]
+    initRange(length) {
+        this.elementRange.min = 0;
+        this.elementRange.max = length-1;
+        this.elementRange.step = 0.01;
+        this.elementRange.value = length-1;
+        this.elementRange.style.marginLeft = `${(this.elementSlider.offsetWidth/length)/2-9}px`;
+        this.elementRange.style.width = `${(this.elementSlider.offsetWidth-this.elementSlider.offsetWidth/length)+20}px`;
+    }
+    mouseDown() {
+        this.isSlideStart = true;
+    }
+    mouseUp() {
+        this.isSlideStart = false;
+        this.elementRange.value = this.currentValue;
+    }
+    mouseMove() {
+        if (!this.isSlideStart) return false;
+        this.currentValue = Math.round(this.elementRange.value);
+        this.showValue(this.currentValue);
+    }
+    showValue(value){
+        const currentEventScaleElement = this.elementEvents.querySelector(`option[value='${value}']`);
 
-export default function() {
-    const eventSliderElement = document.querySelector('.event-slider')
-    const rangeElement = eventSliderElement.querySelector('.event-slider__range')
-    const eventsElement = eventSliderElement.querySelector('.events')
-    let isSlideStart = false;
-    let currentValue = props.length-1;
-
-    rangeElement.min = 0;
-    rangeElement.max = props.length-1;
-    rangeElement.step = 0.01;
-    rangeElement.value = props.length-1;
-    rangeElement.addEventListener('mousedown', ()=>{ isSlideStart = true; });
-    rangeElement.addEventListener('mouseup', ()=>{ 
-        isSlideStart = false;
-        rangeElement.value = currentValue;
-    });
-    rangeElement.addEventListener('mousemove', ()=>{ 
-        if (!isSlideStart) return false;
-        currentValue = Math.round(rangeElement.value);
-        showValue(currentValue);
-    });
-    rangeElement.addEventListener('change', (e)=>{
-        // const currentValue = Math.round(rangeElement.value);
-        // rangeElement.value = currentValue;
-        // showValue(currentValue);
-    })
-
-    props.forEach((event, index) => {
-        const eventElement = document.createElement('option');
-        eventElement.value = index;
-        eventElement.setAttribute('label', event.date);
-        eventsElement.append(eventElement);
-    })
-
-    showValue(currentValue);
-
-    function showValue(value){
-        const currentEventScaleElement = eventsElement.querySelector(`option[value='${value}']`);
-
-        const oldEventInfoElement = eventsElement.querySelector('.events__current');
+        const oldEventInfoElement = this.elementEvents.querySelector('.events__current');
         if (oldEventInfoElement) { oldEventInfoElement.remove() };
 
         const currentEventInfoElement = document.createElement('p');
         currentEventInfoElement.classList.add('events__current');
-        currentEventInfoElement.innerText = props[value].name;
-        eventsElement.append(currentEventInfoElement);
+        currentEventInfoElement.innerText = this.props[value].name;
+        this.elementEvents.append(currentEventInfoElement);
         
         let calcLeft = (currentEventScaleElement.offsetWidth/2 + currentEventScaleElement.offsetLeft) - currentEventInfoElement.offsetWidth/2;
         if (calcLeft < 0) {
             calcLeft = 0;
-        } else if (calcLeft+currentEventInfoElement.offsetWidth > eventsElement.offsetWidth) {
-            calcLeft = eventsElement.offsetWidth - currentEventInfoElement.offsetWidth -1;
+        } else if (calcLeft+currentEventInfoElement.offsetWidth > this.elementEvents.offsetWidth) {
+            calcLeft = this.elementEvents.offsetWidth - currentEventInfoElement.offsetWidth -1;
         }
 
         currentEventInfoElement.style.left = calcLeft + 'px';

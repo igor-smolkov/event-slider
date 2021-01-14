@@ -1,12 +1,11 @@
 .event-slider {
     width: 100%;
-    // padding: 40px 20px;
     color: red;
     // border: 1px solid green;
     &__range {
-        margin: 20px 0;
-        padding: 0 40px;
-        width: 100%;
+        padding: 4px 0;
+        margin: 0 20%;
+        width: 60%;
 
         @mixin track($props: 0) {
             @if $props == focus {
@@ -27,9 +26,6 @@
                 border-color: black;
                 cursor: col-resize;
             } @else if $props == hover {
-                // height: 32px;
-                // width: 32px;
-                // margin-top: -16px;
                 transform: scale(1.5);
             } @else {
                 height: 20px;
@@ -63,23 +59,23 @@
         // border: 1px solid blue;
     }
     .events {
-        display: flex;
-        justify-content: space-between;
+        display: block;
+        min-height: 60px;
         padding: 0 14px;
         padding-right: 16px;
         // border: 1px solid blue;
+        position: relative;
         option {
             display: block;
-            // padding: 10px;
-            // font-size: 0;
-            padding-top: 40px;
-            position: relative;
+            position: absolute;
+            bottom: 0;
+            padding-bottom: 10px;
             // border: 1px solid cyan;
             &::before {
                 content: '';
                 display: block;
                 position: absolute;
-                bottom: -15px;
+                bottom: 0;
                 left: 50%;
                 width: 2px;
                 height: 10px;
@@ -91,8 +87,6 @@
         &__current {
             position: absolute;
             min-width: 80px;
-            // max-width: 120px;
-            // width: 100%;
             text-align: center;
             top: 0;
             left: 0;
