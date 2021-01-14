@@ -35,15 +35,27 @@ export default function() {
     const eventSliderElement = document.querySelector('.event-slider')
     const rangeElement = eventSliderElement.querySelector('.event-slider__range')
     const eventsElement = eventSliderElement.querySelector('.events')
+    let isSlideStart = false;
+    let currentValue = props.length-1;
 
     rangeElement.min = 0;
     rangeElement.max = props.length-1;
     rangeElement.step = 0.01;
     rangeElement.value = props.length-1;
-    rangeElement.addEventListener('change', (e)=>{
-        const currentValue = Math.round(rangeElement.value);
+    rangeElement.addEventListener('mousedown', ()=>{ isSlideStart = true; });
+    rangeElement.addEventListener('mouseup', ()=>{ 
+        isSlideStart = false;
         rangeElement.value = currentValue;
+    });
+    rangeElement.addEventListener('mousemove', ()=>{ 
+        if (!isSlideStart) return false;
+        currentValue = Math.round(rangeElement.value);
         showValue(currentValue);
+    });
+    rangeElement.addEventListener('change', (e)=>{
+        // const currentValue = Math.round(rangeElement.value);
+        // rangeElement.value = currentValue;
+        // showValue(currentValue);
     })
 
     props.forEach((event, index) => {
@@ -53,7 +65,7 @@ export default function() {
         eventsElement.append(eventElement);
     })
 
-    showValue(props.length-1);
+    showValue(currentValue);
 
     function showValue(value){
         const currentEventScaleElement = eventsElement.querySelector(`option[value='${value}']`);

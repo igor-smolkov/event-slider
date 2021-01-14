@@ -1,7 +1,8 @@
 .event-slider {
     width: 100%;
-    padding: 40px 20px;
+    // padding: 40px 20px;
     color: red;
+    // border: 1px solid green;
     &__range {
         margin: 20px 0;
         padding: 0 40px;
@@ -73,6 +74,7 @@
             // font-size: 0;
             padding-top: 40px;
             position: relative;
+            // border: 1px solid cyan;
             &::before {
                 content: '';
                 display: block;
