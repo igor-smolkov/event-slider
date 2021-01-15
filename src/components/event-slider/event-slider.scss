@@ -55,7 +55,12 @@
         &::-moz-range-thumb:hover { @include thumb(hover); }
         &::-webkit-slider-runnable-track:hover { @include track(hover); }
         &::-moz-range-track:hover { @include track(hover); }
-        
+        &.hover {
+            &::-webkit-slider-thumb { @include thumb(hover); }
+            &::-moz-range-thumb { @include thumb(hover); }
+            &::-webkit-slider-runnable-track { @include track(hover); }
+            &::-moz-range-track { @include track(hover); }
+        }
         // border: 1px solid blue;
     }
     .events {
