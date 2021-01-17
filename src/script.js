@@ -3,16 +3,20 @@ import EventSlider from '@comp/event-slider/event-slider'
 
 const props = [
     {
-        name: 'горячий прием',
-        date: '01.01.2018'
-    },
-    {
-        name: 'зло I',
+        name: 'событие',
         date: '01.02.2018'
     },
     {
-        name: 'зло II',
-        date: '01.03.2018'
+        name: 'праздник',
+        date: '05.06.2019'
+    },
+    {
+        name: 'мероприятие',
+        date: '07.08.2020'
+    },
+    {
+        name: 'туса',
+        date: '11.12.2021'
     }
 ]
 

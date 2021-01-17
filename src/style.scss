@@ -25,18 +25,20 @@ body {
     padding: 50px;
     display: flex;
     flex-direction: column;
+
+    // background-color: black;
 }
 
 .desktop {
     align-self: center;
     width: 800px;
     height: 600px;
-    border: 1px solid red;
+    // border: 1px solid red;
     display: flex;
     justify-content: center;
     &__target-zone {
         align-self: center;
-        border: 1px dashed black;
+        // border: 1px dashed black;
         width: 100%;
     }
 }
