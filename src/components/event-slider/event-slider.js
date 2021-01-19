@@ -53,6 +53,10 @@ export default class EventSlider {
         this.elementRange.value = length-1;
         this.elementRange.style.marginLeft = `${(this.elementSlider.offsetWidth/length)/2-9}px`;
         this.elementRange.style.width = `${(this.elementSlider.offsetWidth-this.elementSlider.offsetWidth/length)+20}px`;
+        this.elementRange.addEventListener('pointerup', (e)=>{ 
+            console.log('r'+this.elementRange.value)
+            
+        })
     }
     pointerDown(e) {
         this.isSlideStart = true;
@@ -67,14 +71,24 @@ export default class EventSlider {
     }
     pointerUp(e) {
         this.isSlideStart = false;
+
+        if (e.target.classList.contains('event-slider__range')) {
+            this.currentValue = Math.round(this.elementRange.value); 
+            this.showValue(this.currentValue);
+        }
+
         this.doMove(this.currentValue);
         this.elementRange.classList.remove('hover');
         if (e.pointerType === 'mouse') { this.elementRange.focus(); }
+        
+        this.elementEvents.querySelector('.events__current').classList.remove('events__current_active');
     }
     pointerMove() {
         if (!this.isSlideStart) return;
         this.currentValue = Math.round(this.elementRange.value);
         this.showValue(this.currentValue);
+
+        this.elementEvents.querySelector('.events__current').classList.add('events__current_active');
     }
     keydown(e) {
         if (document.activeElement.classList.contains('event-slider__range')) {
@@ -94,13 +108,15 @@ export default class EventSlider {
     showValue(value){
         const currentEventScaleElement = this.elementEvents.querySelector(`option[value='${value}']`);
 
-        const oldEventInfoElement = this.elementEvents.querySelector('.events__current');
-        if (oldEventInfoElement) { oldEventInfoElement.remove() };
-
-        const currentEventInfoElement = document.createElement('p');
-        currentEventInfoElement.classList.add('events__current');
-        currentEventInfoElement.innerText = currentEventScaleElement.dataset.name;
-        this.elementEvents.append(currentEventInfoElement);
+        let currentEventInfoElement = this.elementEvents.querySelector('.events__current');
+        if (!currentEventInfoElement) { 
+            currentEventInfoElement = document.createElement('p');
+            currentEventInfoElement.classList.add('events__current');
+            currentEventInfoElement.innerText = currentEventScaleElement.dataset.name;
+            this.elementEvents.append(currentEventInfoElement);
+        } else {
+            currentEventInfoElement.innerText = currentEventScaleElement.dataset.name;
+        }
         
         let calcLeft = (currentEventScaleElement.offsetWidth/2 + currentEventScaleElement.offsetLeft) - currentEventInfoElement.offsetWidth/2;
         if (calcLeft < 0) {

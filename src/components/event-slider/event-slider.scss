@@ -116,7 +116,7 @@
             padding: 10px;
             // border: 2px solid #A6A350;
             border-top: none;
-            background-color: #9F4D84;
+            background-color: #7A4C9D;
             // background-color: transparent;
             // border-top-left-radius: 5px;
             // border-top-right-radius: 5px;
@@ -126,6 +126,11 @@
             text-transform: uppercase;
             color: #FAF6F9;
             z-index: 1;
+
+            &_active {
+                background-color: #9F4D84;
+                transition: all 0.15s;
+            }
         }
     }
 }
