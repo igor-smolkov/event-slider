@@ -2,14 +2,16 @@ import './event-slider.scss'
 
 export default class EventSlider {
     constructor(props) {
-        this.elementSlider = document.querySelector('.event-slider');
-        this.elementRange = this.elementSlider.querySelector('.event-slider__range');
-        this.elementEvents = this.elementSlider.querySelector('.events');
+        this.id = props.id;
+        this.elementSlider = props.element;
+        this.elementRange;
+        this.elementEvents;
 
-        this.length = props.length;
+        this.length = props.data.length;
         this.currentValue = this.length-1;
         this.isSlideStart = false;
 
+        this.renderSlider();
         this.initRange(this.length);
 
         this.elementSlider.addEventListener('pointerdown', (e)=>this.pointerDown(e));
@@ -17,7 +19,7 @@ export default class EventSlider {
         this.elementSlider.addEventListener('pointermove', this.pointerMove.bind(this), true);
         this.elementSlider.addEventListener('keydown', (e)=>this.keydown(e));
 
-        props.forEach((event, index) => {
+        props.data.forEach((event, index) => {
             const eventElement = document.createElement('option');
             eventElement.value = index;
             eventElement.setAttribute('label', event.date);
@@ -28,6 +30,21 @@ export default class EventSlider {
         })
 
         this.showValue(this.currentValue);
+    }
+    renderSlider() {
+        this.elementSlider.classList.add('event-slider');
+
+        this.elementEvents = document.createElement('datalist');
+        this.elementEvents.classList.add('events');
+        this.elementEvents.id = 'event-marks-' + this.id;
+
+        this.elementRange = document.createElement('input');
+        this.elementRange.classList.add('event-slider__range');
+        this.elementRange.type = 'range';
+        this.elementRange.setAttribute('list', 'event-marks-' + this.id);
+
+        this.elementSlider.append(this.elementEvents);
+        this.elementSlider.append(this.elementRange);
     }
     initRange(length) {
         this.elementRange.min = 0;
