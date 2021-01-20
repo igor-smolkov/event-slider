@@ -19,6 +19,8 @@ export default class EventSlider {
         this.elementSlider.addEventListener('pointermove', this.pointerMove.bind(this), true);
         this.elementSlider.addEventListener('keydown', (e)=>this.keydown(e));
 
+        this.eventChange = new Event('eventchange', {bubbles: true});
+
         props.data.forEach((event, index) => {
             const eventElement = document.createElement('option');
             eventElement.value = index;
@@ -53,10 +55,6 @@ export default class EventSlider {
         this.elementRange.value = length-1;
         this.elementRange.style.marginLeft = `${(this.elementSlider.offsetWidth/length)/2-9}px`;
         this.elementRange.style.width = `${(this.elementSlider.offsetWidth-this.elementSlider.offsetWidth/length)+20}px`;
-        this.elementRange.addEventListener('pointerup', (e)=>{ 
-            console.log('r'+this.elementRange.value)
-            
-        })
     }
     pointerDown(e) {
         this.isSlideStart = true;
@@ -73,7 +71,7 @@ export default class EventSlider {
         this.isSlideStart = false;
 
         if (e.target.classList.contains('event-slider__range')) {
-            this.currentValue = Math.round(this.elementRange.value); 
+            this.updateCurentValue(this.elementRange.value);
             this.showValue(this.currentValue);
         }
 
@@ -85,7 +83,7 @@ export default class EventSlider {
     }
     pointerMove() {
         if (!this.isSlideStart) return;
-        this.currentValue = Math.round(this.elementRange.value);
+        this.updateCurentValue(this.elementRange.value);
         this.showValue(this.currentValue);
 
         this.elementEvents.querySelector('.events__current').classList.add('events__current_active');
@@ -93,13 +91,28 @@ export default class EventSlider {
     keydown(e) {
         if (document.activeElement.classList.contains('event-slider__range')) {
             if (e.code === 'ArrowLeft') {
-                this.currentValue = this.currentValue - 1 < 0 ? 0 : this.currentValue - 1;
+                if (this.currentValue - 1 < 0) { 
+                    this.updateCurentValue(0);
+                } else { 
+                    this.updateCurentValue(this.currentValue - 1);
+                }
             }
             if (e.code === 'ArrowRight') {
-                this.currentValue = this.currentValue + 1 > this.length-1 ? this.length-1 : this.currentValue + 1;
+                if (this.currentValue + 1 > this.length-1) { 
+                    this.updateCurentValue(this.length-1) 
+                } else {
+                    this.updateCurentValue(this.currentValue + 1);
+                }
             }
             this.doMove(this.currentValue);
             this.showValue(this.currentValue);
+        }
+    }
+    updateCurentValue(value) {
+        const oldValue = this.currentValue;
+        this.currentValue = Math.round(value);
+        if (oldValue !== this.currentValue) {
+            this.elementSlider.dispatchEvent(this.eventChange);
         }
     }
     doMove() {
