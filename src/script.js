@@ -5,69 +5,143 @@ const data = [
     [
         {
             name: 'событие',
-            date: '01.02.2018'
+            date: '01.02.18'
         },
         {
             name: 'праздник',
-            date: '05.06.2019'
+            date: '05.06.19'
         },
         {
             name: 'мероприятие',
-            date: '07.08.2020'
+            date: '07.08.20'
         },
         {
             name: 'туса',
-            date: '11.12.2021'
+            date: '11.12.21'
         }
     ],
     [
         {
             name: 'ивент',
-            date: '20.10.2018'
+            date: '20.10.18'
         },
         {
             name: 'встреча',
-            date: '16.03.2019'
+            date: '16.03.19'
         },
         {
             name: 'др',
-            date: '05.04.2020'
+            date: '05.04.20'
         },
         {
             name: 'встреча',
-            date: '16.03.2019'
+            date: '16.03.19'
         },
         {
             name: 'др',
-            date: '05.04.2020'
+            date: '05.04.20'
         },
         {
             name: 'встреча',
-            date: '16.03.2019'
+            date: '16.03.19'
         },
         {
             name: 'др',
-            date: '05.04.2020'
+            date: '05.04.20'
         },
         {
             name: 'встреча',
-            date: '16.03.2019'
+            date: '16.03.19'
         },
         {
             name: 'др',
-            date: '05.04.2020'
+            date: '05.04.20'
         },
         {
             name: 'встреча',
-            date: '16.03.2019'
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        },
+        {
+            name: 'др',
+            date: '05.04.20'
+        },
+        {
+            name: 'встреча',
+            date: '16.03.19'
+        }
+    ],
+    [
+        {
+            name: 'грифиндор',
+            date: '06.02.21'
+        },
+        {
+            name: 'коктевран',
+            date: '13.02.21'
+        },
+        {
+            name: 'слизерин',
+            date: '20.02.21'
+        },
+        {
+            name: 'пуфендуй',
+            date: '27.02.21'
         }
     ]
 ]
 
-document.addEventListener("DOMContentLoaded", ()=>{
+// document.addEventListener("DOMContentLoaded", ()=>{
     const elementsSlider = document.querySelectorAll('.desktop__slider');
     elementsSlider.forEach((elementSlider, index) => {
-        const slider = new EventSlider({id: index, element: elementSlider, data: data[index] });
+        const slider = new EventSlider({id: index, element: elementSlider, data: data[index], current: 1 });
 
         const pull = [];
         elementSlider.addEventListener('eventchange', ()=>{
@@ -75,7 +149,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             document.body.style.backgroundColor = `rgb(${pull[slider.currentValue][0]},${pull[slider.currentValue][1]},${pull[slider.currentValue][2]})`;
         });
     });
-});
+// });
 
 function getR(min, max) {
     min = Math.ceil(min);

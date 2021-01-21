@@ -4,6 +4,7 @@
     // border: 2px solid #7A4C9D;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.2);
     // border-radius: 10px;
+    padding: 0 10px;
     &__range {
         padding-top: 4px;
         padding-bottom: 1px;
@@ -79,8 +80,8 @@
     .events {
         display: block;
         min-height: 80px;
-        padding: 0 14px;
-        padding-right: 16px;
+        // padding: 0 14px;
+        // padding-right: 16px;
         // border: 1px solid blue;
         position: relative;
         option {
@@ -102,6 +103,24 @@
                 height: 5px;
                 background-color: #B3B1B5;
             }
+        }
+        &_smaller {
+            option {
+                transform: rotate(-45deg);
+                // border: 1px solid black;
+                &::before {
+                    left: 35%;
+                    bottom: 10%;
+                    transform: rotate(45deg);
+                }
+            }
+            min-height: 90px;
+        }
+        &_smallest {
+            option {
+                font-size: 0;
+            }
+            min-height: 60px;
         }
         
         position: relative;

@@ -3,16 +3,23 @@ import './event-slider.scss'
 export default class EventSlider {
     constructor(props) {
         this.id = props.id;
+        // this.data = props.data;
+
         this.elementSlider = props.element;
         this.elementRange;
         this.elementEvents;
 
         this.length = props.data.length;
-        this.currentValue = this.length-1;
+        this.currentValue = props.current ? props.current-1 : this.length-1;
         this.isSlideStart = false;
+        this.sliderWidthPadding = 10;
+        this.sliderWidth = this.elementSlider.offsetWidth-this.sliderWidthPadding*2;
 
         this.renderSlider();
         this.initRange(this.length);
+        this.initEvents(props.data);
+        this.initEvents(props.data); //лагбаг
+        this.showValue(this.currentValue);
 
         this.elementSlider.addEventListener('pointerdown', (e)=>this.pointerDown(e));
         this.elementSlider.addEventListener('pointerup', (e)=>this.pointerUp(e));
@@ -21,17 +28,12 @@ export default class EventSlider {
 
         this.eventChange = new Event('eventchange', {bubbles: true});
 
-        props.data.forEach((event, index) => {
-            const eventElement = document.createElement('option');
-            eventElement.value = index;
-            eventElement.setAttribute('label', event.date);
-            eventElement.setAttribute('data-name', event.name);
-            this.elementEvents.append(eventElement);
-            eventElement.style.left = (this.elementSlider.offsetWidth/this.length)*index+
-                ((this.elementSlider.offsetWidth/this.length)-eventElement.offsetWidth)/2 + 'px';
+        window.addEventListener('resize', ()=>{
+            this.sliderWidth = this.elementSlider.offsetWidth-this.sliderWidthPadding*2;
+            this.initRange(this.length);
+            this.initEvents(props.data);
+            this.showValue(this.currentValue);
         })
-
-        this.showValue(this.currentValue);
     }
     renderSlider() {
         this.elementSlider.classList.add('event-slider');
@@ -52,9 +54,34 @@ export default class EventSlider {
         this.elementRange.min = 0;
         this.elementRange.max = length-1;
         this.elementRange.step = 0.01;
-        this.elementRange.value = length-1;
-        this.elementRange.style.marginLeft = `${(this.elementSlider.offsetWidth/length)/2-9}px`;
-        this.elementRange.style.width = `${(this.elementSlider.offsetWidth-this.elementSlider.offsetWidth/length)+20}px`;
+        this.elementRange.value = this.currentValue;
+        this.elementRange.style.marginLeft = `${(this.sliderWidth/length)/2-9}px`;
+        this.elementRange.style.width = `${(this.sliderWidth-this.sliderWidth/length)+20}px`;
+        this.elementRange.style.marginRight = '0';
+    }
+    initEvents(data){
+        this.elementEvents.innerHTML = '';
+        let biggestEventElement = null;
+        data.forEach((event, index) => {
+            const eventElement = document.createElement('option');
+            eventElement.value = index;
+            eventElement.setAttribute('label', event.date);
+            eventElement.setAttribute('data-name', event.name);
+            this.elementEvents.append(eventElement);
+            eventElement.style.left = (this.sliderWidth/this.length)*index+
+                ((this.sliderWidth/this.length)-eventElement.offsetWidth)/2 + 'px';
+
+            biggestEventElement = biggestEventElement === null ? eventElement : biggestEventElement;
+            biggestEventElement = biggestEventElement.offsetWidth < eventElement.offsetWidth ? eventElement : biggestEventElement;
+        });
+        this.elementEvents.classList.remove('events_smaller');
+        this.elementEvents.classList.remove('events_smallest');
+        if(this.sliderWidth/this.length < biggestEventElement.offsetWidth/2+biggestEventElement.offsetWidth/8) {
+            this.elementEvents.classList.add('events_smallest');
+        }
+        if(this.sliderWidth/this.length < biggestEventElement.offsetWidth+biggestEventElement.offsetWidth/4) {
+            this.elementEvents.classList.add('events_smaller');
+        }
     }
     pointerDown(e) {
         this.isSlideStart = true;
